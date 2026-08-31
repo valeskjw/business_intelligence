@@ -1592,9 +1592,41 @@ border-radius: 0px;
 </div>
 
 
+<div id="cincy-crash-data" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Cincy Crash Data</h1>
+<pre class="r"><code>crashes_per_day = 30125 / 365
+crashes_per_day</code></pre>
+<pre><code>## [1] 82.53425</code></pre>
+<pre class="r"><code># adds the columns in crashes by day
+crashes_by_day = c(2020L, 2241L, 2327L, 2285L,
+                   2380L, 1866L, 1664L)
+# adds names to the columns in vector - like a dictionary
+names(crashes_by_day) = c(&quot;Mon&quot;, &quot;Tue&quot;, &quot;Wed&quot;, &quot;Thu&quot;,
+                          &quot;Fri&quot;, &quot;Sat&quot;, &quot;Sun&quot;)
+crashes_by_day</code></pre>
+<pre><code>##  Mon  Tue  Wed  Thu  Fri  Sat  Sun 
+## 2020 2241 2327 2285 2380 1866 1664</code></pre>
+<pre class="r"><code># checks for each item in the vector - returns a value for each day
+crashes_by_day &gt; 2100</code></pre>
+<pre><code>##   Mon   Tue   Wed   Thu   Fri   Sat   Sun 
+## FALSE  TRUE  TRUE  TRUE  TRUE FALSE FALSE</code></pre>
+<div id="type-of-crashes_by_day" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Type of
+<code>crashes_by_day</code></h2>
+<pre class="r"><code>typeof(TRUE)     # logical</code></pre>
+<pre><code>## [1] &quot;logical&quot;</code></pre>
+<pre class="r"><code>typeof(401L)     # integer: the L</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<pre class="r"><code>typeof(401)      # double: no L</code></pre>
+<pre><code>## [1] &quot;double&quot;</code></pre>
+<pre class="r"><code>typeof(&quot;401&quot;)    # character: quotes</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<pre class="r"><code>typeof(crashes_by_day)  # integers</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+</div>
+</div>
 
-
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkNsYXNzIDMgLSBSIEJhc2ljcyINCm91dHB1dDogDQogIGh0bWxfZG9jdW1lbnQ6DQogICAgdG9jOiB0cnVlIA0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KICAgIG51bWJlcl9zZWN0aW9uczogdHJ1ZQ0KICAgIGNvZGVfZm9sZGluZzogc2hvdw0KICAgIGNvZGVfZG93bmxvYWQ6IHRydWUNCmRhdGU6ICIyMDI2LTA4LTMxIg0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0KYGBgDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkNsYXNzIDMgLSBSIEJhc2ljcyINCm91dHB1dDogDQogIGh0bWxfZG9jdW1lbnQ6DQogICAgdG9jOiB0cnVlIA0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KICAgIG51bWJlcl9zZWN0aW9uczogdHJ1ZQ0KICAgIGNvZGVfZm9sZGluZzogc2hvdw0KICAgIGNvZGVfZG93bmxvYWQ6IHRydWUNCmRhdGU6ICIyMDI2LTA4LTMxIg0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0KYGBgDQoNCg0KIyBDaW5jeSBDcmFzaCBEYXRhDQpgYGB7ciBjaW5jeV9jcmFzaGVzfQ0KY3Jhc2hlc19wZXJfZGF5ID0gMzAxMjUgLyAzNjUNCmNyYXNoZXNfcGVyX2RheQ0KDQojIGFkZHMgdGhlIGNvbHVtbnMgaW4gY3Jhc2hlcyBieSBkYXkNCmNyYXNoZXNfYnlfZGF5ID0gYygyMDIwTCwgMjI0MUwsIDIzMjdMLCAyMjg1TCwNCiAgICAgICAgICAgICAgICAgICAyMzgwTCwgMTg2NkwsIDE2NjRMKQ0KIyBhZGRzIG5hbWVzIHRvIHRoZSBjb2x1bW5zIGluIHZlY3RvciAtIGxpa2UgYSBkaWN0aW9uYXJ5DQpuYW1lcyhjcmFzaGVzX2J5X2RheSkgPSBjKCJNb24iLCAiVHVlIiwgIldlZCIsICJUaHUiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAiRnJpIiwgIlNhdCIsICJTdW4iKQ0KY3Jhc2hlc19ieV9kYXkNCg0KIyBjaGVja3MgZm9yIGVhY2ggaXRlbSBpbiB0aGUgdmVjdG9yIC0gcmV0dXJucyBhIHZhbHVlIGZvciBlYWNoIGRheQ0KY3Jhc2hlc19ieV9kYXkgPiAyMTAwDQpgYGANCg0KIyMgVHlwZSBvZiBgY3Jhc2hlc19ieV9kYXlgDQpgYGB7ciB0eXBlb2ZfdmVjfQ0KdHlwZW9mKFRSVUUpICAgICAjIGxvZ2ljYWwNCnR5cGVvZig0MDFMKSAgICAgIyBpbnRlZ2VyOiB0aGUgTA0KdHlwZW9mKDQwMSkgICAgICAjIGRvdWJsZTogbm8gTA0KdHlwZW9mKCI0MDEiKSAgICAjIGNoYXJhY3RlcjogcXVvdGVzDQoNCnR5cGVvZihjcmFzaGVzX2J5X2RheSkgICMgaW50ZWdlcnMNCmBgYA0KDQoNCg==</div>
 
 
 </div>
