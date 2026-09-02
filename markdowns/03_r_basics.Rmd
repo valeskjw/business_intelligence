@@ -38,6 +38,8 @@ typeof(TRUE)     # logical
 typeof(401L)     # integer: the L
 typeof(401)      # double: no L
 typeof("401")    # character: quotes
+typeof(c(200, "string")) # character - takes the most general type of the vector
+typeof(c(200, 200.1)) # double - takes most general
 
 typeof(crashes_by_day)  # integers
 ```

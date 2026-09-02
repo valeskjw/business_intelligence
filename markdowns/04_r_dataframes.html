@@ -10,9 +10,9 @@
 
 
 
-<meta name="date" content="2026-08-31" />
+<meta name="date" content="2026-09-02" />
 
-<title>Class 3 - R Basics</title>
+<title>Class 4 - R Data Frames</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1586,51 +1586,148 @@ border-radius: 0px;
 
 
 
-<h1 class="title toc-ignore">Class 3 - R Basics</h1>
-<h4 class="date">2026-08-31</h4>
+<h1 class="title toc-ignore">Class 4 - R Data Frames</h1>
+<h4 class="date">2026-09-02</h4>
 
 </div>
 
 
-<div id="cincy-crash-data" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Cincy Crash Data</h1>
-<pre class="r"><code>crashes_per_day = 30125 / 365
-crashes_per_day</code></pre>
-<pre><code>## [1] 82.53425</code></pre>
-<pre class="r"><code># adds the columns in crashes by day
-crashes_by_day = c(2020L, 2241L, 2327L, 2285L,
-                   2380L, 1866L, 1664L)
-# adds names to the columns in vector - like a dictionary
+<div id="data-frames" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Data Frames</h1>
+<pre class="r"><code>crashes_by_day = c(2020, 2241, 2327, 2285, 2380, 1866, 1664)
 names(crashes_by_day) = c(&quot;Mon&quot;, &quot;Tue&quot;, &quot;Wed&quot;, &quot;Thu&quot;,
                           &quot;Fri&quot;, &quot;Sat&quot;, &quot;Sun&quot;)
-crashes_by_day</code></pre>
+
+crashes_df = tibble::tibble(
+  day     = names(crashes_by_day),
+  crashes = crashes_by_day,
+  busy    = crashes_by_day &gt; 2000
+)
+crashes_df</code></pre>
+<pre><code>## # A tibble: 7 × 3
+##   day   crashes busy 
+##   &lt;chr&gt;   &lt;dbl&gt; &lt;lgl&gt;
+## 1 Mon      2020 TRUE 
+## 2 Tue      2241 TRUE 
+## 3 Wed      2327 TRUE 
+## 4 Thu      2285 TRUE 
+## 5 Fri      2380 TRUE 
+## 6 Sat      1866 FALSE
+## 7 Sun      1664 FALSE</code></pre>
+<pre class="r"><code>dplyr::glimpse(crashes_df)  # dpylyr is the package name, glimpse is the function</code></pre>
+<pre><code>## Rows: 7
+## Columns: 3
+## $ day     &lt;chr&gt; &quot;Mon&quot;, &quot;Tue&quot;, &quot;Wed&quot;, &quot;Thu&quot;, &quot;Fri&quot;, &quot;Sat&quot;, &quot;Sun&quot;
+## $ crashes &lt;dbl&gt; 2020, 2241, 2327, 2285, 2380, 1866, 1664
+## $ busy    &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE</code></pre>
+<pre class="r"><code>                            # Equivalent to str() but in a neater format</code></pre>
+<pre class="r"><code># a list is more flexible than a vector. It can hold any arrangement of data types
+example_list = list(
+  1:3,                    # integers 1, 2, 3
+  &quot;a&quot;,                    # one piece of text
+  c(TRUE, FALSE, TRUE),   # three logicals
+  c(2.3, 5.9)             # two decimals
+)
+str(example_list)         # the x-ray view</code></pre>
+<pre><code>## List of 4
+##  $ : int [1:3] 1 2 3
+##  $ : chr &quot;a&quot;
+##  $ : logi [1:3] TRUE FALSE TRUE
+##  $ : num [1:2] 2.3 5.9</code></pre>
+<pre class="r"><code>str(example_list[1])     # [ ]  the shaker: a list of 1</code></pre>
+<pre><code>## List of 1
+##  $ : int [1:3] 1 2 3</code></pre>
+<pre class="r"><code>str(example_list[[1]])   # [[ ]] the packet: the element</code></pre>
+<pre><code>##  int [1:3] 1 2 3</code></pre>
+<pre class="r"><code>example_list[[1]][[1]]   # the pepper: first value in it</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>example_list[[4]][2]     # element 4, then its 2nd value</code></pre>
+<pre><code>## [1] 5.9</code></pre>
+</div>
+<div id="examing-the-job-add" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Examing the job
+add</h1>
+<pre class="r"><code>job = list(
+  title   = &quot;Research Data Scientist, Magic Eye&quot;,
+  company = &quot;Google&quot;,
+  salary  = list(min = 147000, max = 210000)
+)
+str(job)</code></pre>
+<pre><code>## List of 3
+##  $ title  : chr &quot;Research Data Scientist, Magic Eye&quot;
+##  $ company: chr &quot;Google&quot;
+##  $ salary :List of 2
+##   ..$ min: num 147000
+##   ..$ max: num 210000</code></pre>
+<pre class="r"><code># $ is for finding names elements in a list
+# Write one expression to extract each of
+
+# 1. The company name.
+company_name = job$company # or job[[2]] however this returns a list of job[2]
+company_name</code></pre>
+<pre><code>## [1] &quot;Google&quot;</code></pre>
+<pre class="r"><code>job[[2]] </code></pre>
+<pre><code>## [1] &quot;Google&quot;</code></pre>
+<pre class="r"><code># 2. The maximum salary.
+max_salary = job$salary$max 
+max_salary</code></pre>
+<pre><code>## [1] 210000</code></pre>
+<pre class="r"><code># 3. The maximum salary again, using only [[ ]].
+max_salary = job[[3]][[2]] # -&gt; the 2nd item in the 3rd item of job list
+max_salary</code></pre>
+<pre><code>## [1] 210000</code></pre>
+<pre class="r"><code># 4. The names of the elements in job.
+names(job)</code></pre>
+<pre><code>## [1] &quot;title&quot;   &quot;company&quot; &quot;salary&quot;</code></pre>
+</div>
+<div id="subsetting-a-vector" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Subsetting a
+Vector</h1>
+<pre class="r"><code># Cannot use a dolar sign with a vector -&gt; use brackets
+
+# Will both return the same thing
+crashes_by_day[2]</code></pre>
+<pre><code>##  Tue 
+## 2241</code></pre>
+<pre class="r"><code>crashes_by_day[&quot;Tue&quot;]</code></pre>
+<pre><code>##  Tue 
+## 2241</code></pre>
+<pre class="r"><code># Can subset by condition
+crashes_by_day[crashes_by_day &gt; 2300]</code></pre>
+<pre><code>##  Wed  Fri 
+## 2327 2380</code></pre>
+<pre class="r"><code># can subset by range -&gt; inclusive
+crashes_by_day[2:4]</code></pre>
+<pre><code>##  Tue  Wed  Thu 
+## 2241 2327 2285</code></pre>
+<pre class="r"><code># Can pass a vector to subset a vector, same as above subset
+crashes_by_day[c(&quot;Tue&quot;, &quot;Wed&quot;, &quot;Thu&quot;)]</code></pre>
+<pre><code>##  Tue  Wed  Thu 
+## 2241 2327 2285</code></pre>
+</div>
+<div id="subsetting-a-data-frame" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Subsetting a data
+frame</h1>
+<pre class="r"><code>crashes_df = tibble::tibble(
+  day     = names(crashes_by_day),
+  crashes = crashes_by_day,
+  busy    = crashes_by_day &gt; 2000)
+crashes_df$crashes                     # one column, as a vector</code></pre>
 <pre><code>##  Mon  Tue  Wed  Thu  Fri  Sat  Sun 
 ## 2020 2241 2327 2285 2380 1866 1664</code></pre>
-<pre class="r"><code># checks for each item in the vector - returns a value for each day
-crashes_by_day &gt; 2100</code></pre>
-<pre><code>##   Mon   Tue   Wed   Thu   Fri   Sat   Sun 
-## FALSE  TRUE  TRUE  TRUE  TRUE FALSE FALSE</code></pre>
-<div id="type-of-crashes_by_day" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> Type of
-<code>crashes_by_day</code></h2>
-<pre class="r"><code>typeof(TRUE)     # logical</code></pre>
-<pre><code>## [1] &quot;logical&quot;</code></pre>
-<pre class="r"><code>typeof(401L)     # integer: the L</code></pre>
-<pre><code>## [1] &quot;integer&quot;</code></pre>
-<pre class="r"><code>typeof(401)      # double: no L</code></pre>
-<pre><code>## [1] &quot;double&quot;</code></pre>
-<pre class="r"><code>typeof(&quot;401&quot;)    # character: quotes</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<pre class="r"><code>typeof(c(200, &quot;string&quot;)) # character - takes the most general type of the vector</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<pre class="r"><code>typeof(c(200, 200.1)) # double - takes most general</code></pre>
-<pre><code>## [1] &quot;double&quot;</code></pre>
-<pre class="r"><code>typeof(crashes_by_day)  # integers</code></pre>
-<pre><code>## [1] &quot;integer&quot;</code></pre>
-</div>
+<pre class="r"><code>crashes_df[[&quot;crashes&quot;]]                # the same vector, by name</code></pre>
+<pre><code>##  Mon  Tue  Wed  Thu  Fri  Sat  Sun 
+## 2020 2241 2327 2285 2380 1866 1664</code></pre>
+<pre class="r"><code>crashes_df[1:2, c(&quot;day&quot;, &quot;crashes&quot;)]   # rows 1 to 2, two columns</code></pre>
+<pre><code>## # A tibble: 2 × 2
+##   day   crashes
+##   &lt;chr&gt;   &lt;dbl&gt;
+## 1 Mon      2020
+## 2 Tue      2241</code></pre>
+<pre class="r"><code>                                       # [1:2] refers to Mon/Tue rows, day and crashes are the columns from those rows</code></pre>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkNsYXNzIDMgLSBSIEJhc2ljcyINCm91dHB1dDogDQogIGh0bWxfZG9jdW1lbnQ6DQogICAgdG9jOiB0cnVlIA0KICAgIHRvY19mbG9hdDogdHJ1ZQ0KICAgIG51bWJlcl9zZWN0aW9uczogdHJ1ZQ0KICAgIGNvZGVfZm9sZGluZzogc2hvdw0KICAgIGNvZGVfZG93bmxvYWQ6IHRydWUNCmRhdGU6ICIyMDI2LTA4LTMxIg0KLS0tDQoNCmBgYHtyIHNldHVwLCBpbmNsdWRlPUZBTFNFfQ0Ka25pdHI6Om9wdHNfY2h1bmskc2V0KGVjaG8gPSBUUlVFKQ0KYGBgDQoNCg0KIyBDaW5jeSBDcmFzaCBEYXRhDQpgYGB7ciBjaW5jeV9jcmFzaGVzfQ0KY3Jhc2hlc19wZXJfZGF5ID0gMzAxMjUgLyAzNjUNCmNyYXNoZXNfcGVyX2RheQ0KDQojIGFkZHMgdGhlIGNvbHVtbnMgaW4gY3Jhc2hlcyBieSBkYXkNCmNyYXNoZXNfYnlfZGF5ID0gYygyMDIwTCwgMjI0MUwsIDIzMjdMLCAyMjg1TCwNCiAgICAgICAgICAgICAgICAgICAyMzgwTCwgMTg2NkwsIDE2NjRMKQ0KIyBhZGRzIG5hbWVzIHRvIHRoZSBjb2x1bW5zIGluIHZlY3RvciAtIGxpa2UgYSBkaWN0aW9uYXJ5DQpuYW1lcyhjcmFzaGVzX2J5X2RheSkgPSBjKCJNb24iLCAiVHVlIiwgIldlZCIsICJUaHUiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAiRnJpIiwgIlNhdCIsICJTdW4iKQ0KY3Jhc2hlc19ieV9kYXkNCg0KIyBjaGVja3MgZm9yIGVhY2ggaXRlbSBpbiB0aGUgdmVjdG9yIC0gcmV0dXJucyBhIHZhbHVlIGZvciBlYWNoIGRheQ0KY3Jhc2hlc19ieV9kYXkgPiAyMTAwDQpgYGANCg0KIyMgVHlwZSBvZiBgY3Jhc2hlc19ieV9kYXlgDQpgYGB7ciB0eXBlb2ZfdmVjfQ0KdHlwZW9mKFRSVUUpICAgICAjIGxvZ2ljYWwNCnR5cGVvZig0MDFMKSAgICAgIyBpbnRlZ2VyOiB0aGUgTA0KdHlwZW9mKDQwMSkgICAgICAjIGRvdWJsZTogbm8gTA0KdHlwZW9mKCI0MDEiKSAgICAjIGNoYXJhY3RlcjogcXVvdGVzDQp0eXBlb2YoYygyMDAsICJzdHJpbmciKSkgIyBjaGFyYWN0ZXIgLSB0YWtlcyB0aGUgbW9zdCBnZW5lcmFsIHR5cGUgb2YgdGhlIHZlY3Rvcg0KdHlwZW9mKGMoMjAwLCAyMDAuMSkpICMgZG91YmxlIC0gdGFrZXMgbW9zdCBnZW5lcmFsDQoNCnR5cGVvZihjcmFzaGVzX2J5X2RheSkgICMgaW50ZWdlcnMNCmBgYA0KDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkNsYXNzIDQgLSBSIERhdGEgRnJhbWVzIg0Kb3V0cHV0OiANCiAgaHRtbF9kb2N1bWVudDoNCiAgICB0b2M6IHRydWUgDQogICAgdG9jX2Zsb2F0OiB0cnVlDQogICAgbnVtYmVyX3NlY3Rpb25zOiB0cnVlDQogICAgY29kZV9mb2xkaW5nOiBzaG93DQogICAgY29kZV9kb3dubG9hZDogdHJ1ZQ0KZGF0ZTogIjIwMjYtMDktMDIiDQotLS0NCg0KYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9DQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUpDQpgYGANCg0KIyBEYXRhIEZyYW1lcw0KYGBge3IgZGZ9DQpjcmFzaGVzX2J5X2RheSA9IGMoMjAyMCwgMjI0MSwgMjMyNywgMjI4NSwgMjM4MCwgMTg2NiwgMTY2NCkNCm5hbWVzKGNyYXNoZXNfYnlfZGF5KSA9IGMoIk1vbiIsICJUdWUiLCAiV2VkIiwgIlRodSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICJGcmkiLCAiU2F0IiwgIlN1biIpDQoNCmNyYXNoZXNfZGYgPSB0aWJibGU6OnRpYmJsZSgNCiAgZGF5ICAgICA9IG5hbWVzKGNyYXNoZXNfYnlfZGF5KSwNCiAgY3Jhc2hlcyA9IGNyYXNoZXNfYnlfZGF5LA0KICBidXN5ICAgID0gY3Jhc2hlc19ieV9kYXkgPiAyMDAwDQopDQpjcmFzaGVzX2RmDQoNCmRwbHlyOjpnbGltcHNlKGNyYXNoZXNfZGYpICAjIGRweWx5ciBpcyB0aGUgcGFja2FnZSBuYW1lLCBnbGltcHNlIGlzIHRoZSBmdW5jdGlvbg0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICMgRXF1aXZhbGVudCB0byBzdHIoKSBidXQgaW4gYSBuZWF0ZXIgZm9ybWF0DQpgYGANCg0KYGBge3IgbGlzdH0NCiMgYSBsaXN0IGlzIG1vcmUgZmxleGlibGUgdGhhbiBhIHZlY3Rvci4gSXQgY2FuIGhvbGQgYW55IGFycmFuZ2VtZW50IG9mIGRhdGEgdHlwZXMNCmV4YW1wbGVfbGlzdCA9IGxpc3QoDQogIDE6MywgICAgICAgICAgICAgICAgICAgICMgaW50ZWdlcnMgMSwgMiwgMw0KICAiYSIsICAgICAgICAgICAgICAgICAgICAjIG9uZSBwaWVjZSBvZiB0ZXh0DQogIGMoVFJVRSwgRkFMU0UsIFRSVUUpLCAgICMgdGhyZWUgbG9naWNhbHMNCiAgYygyLjMsIDUuOSkgICAgICAgICAgICAgIyB0d28gZGVjaW1hbHMNCikNCnN0cihleGFtcGxlX2xpc3QpICAgICAgICAgIyB0aGUgeC1yYXkgdmlldw0KDQpzdHIoZXhhbXBsZV9saXN0WzFdKSAgICAgIyBbIF0gIHRoZSBzaGFrZXI6IGEgbGlzdCBvZiAxDQpzdHIoZXhhbXBsZV9saXN0W1sxXV0pICAgIyBbWyBdXSB0aGUgcGFja2V0OiB0aGUgZWxlbWVudA0KZXhhbXBsZV9saXN0W1sxXV1bWzFdXSAgICMgdGhlIHBlcHBlcjogZmlyc3QgdmFsdWUgaW4gaXQNCmV4YW1wbGVfbGlzdFtbNF1dWzJdICAgICAjIGVsZW1lbnQgNCwgdGhlbiBpdHMgMm5kIHZhbHVlDQoNCmBgYA0KDQojIEV4YW1pbmcgdGhlIGpvYiBhZGQNCmBgYHtyIGpvYl9hZGR9DQpqb2IgPSBsaXN0KA0KICB0aXRsZSAgID0gIlJlc2VhcmNoIERhdGEgU2NpZW50aXN0LCBNYWdpYyBFeWUiLA0KICBjb21wYW55ID0gIkdvb2dsZSIsDQogIHNhbGFyeSAgPSBsaXN0KG1pbiA9IDE0NzAwMCwgbWF4ID0gMjEwMDAwKQ0KKQ0Kc3RyKGpvYikNCg0KIyAkIGlzIGZvciBmaW5kaW5nIG5hbWVzIGVsZW1lbnRzIGluIGEgbGlzdA0KIyBXcml0ZSBvbmUgZXhwcmVzc2lvbiB0byBleHRyYWN0IGVhY2ggb2YNCg0KIyAxLiBUaGUgY29tcGFueSBuYW1lLg0KY29tcGFueV9uYW1lID0gam9iJGNvbXBhbnkgIyBvciBqb2JbWzJdXSBob3dldmVyIHRoaXMgcmV0dXJucyBhIGxpc3Qgb2Ygam9iWzJdDQpjb21wYW55X25hbWUNCmpvYltbMl1dIA0KIyAyLiBUaGUgbWF4aW11bSBzYWxhcnkuDQptYXhfc2FsYXJ5ID0gam9iJHNhbGFyeSRtYXggDQptYXhfc2FsYXJ5DQojIDMuIFRoZSBtYXhpbXVtIHNhbGFyeSBhZ2FpbiwgdXNpbmcgb25seSBbWyBdXS4NCm1heF9zYWxhcnkgPSBqb2JbWzNdXVtbMl1dICMgLT4gdGhlIDJuZCBpdGVtIGluIHRoZSAzcmQgaXRlbSBvZiBqb2IgbGlzdA0KbWF4X3NhbGFyeQ0KIyA0LiBUaGUgbmFtZXMgb2YgdGhlIGVsZW1lbnRzIGluIGpvYi4NCm5hbWVzKGpvYikNCg0KYGBgDQoNCiMgU3Vic2V0dGluZyBhIFZlY3Rvcg0KYGBge3IgdmVjdG9yX3N1YnNldH0NCiMgQ2Fubm90IHVzZSBhIGRvbGFyIHNpZ24gd2l0aCBhIHZlY3RvciAtPiB1c2UgYnJhY2tldHMNCg0KIyBXaWxsIGJvdGggcmV0dXJuIHRoZSBzYW1lIHRoaW5nDQpjcmFzaGVzX2J5X2RheVsyXQ0KY3Jhc2hlc19ieV9kYXlbIlR1ZSJdDQoNCiMgQ2FuIHN1YnNldCBieSBjb25kaXRpb24NCmNyYXNoZXNfYnlfZGF5W2NyYXNoZXNfYnlfZGF5ID4gMjMwMF0NCg0KIyBjYW4gc3Vic2V0IGJ5IHJhbmdlIC0+IGluY2x1c2l2ZQ0KY3Jhc2hlc19ieV9kYXlbMjo0XQ0KDQojIENhbiBwYXNzIGEgdmVjdG9yIHRvIHN1YnNldCBhIHZlY3Rvciwgc2FtZSBhcyBhYm92ZSBzdWJzZXQNCmNyYXNoZXNfYnlfZGF5W2MoIlR1ZSIsICJXZWQiLCAiVGh1IildDQoNCmBgYA0KDQojIFN1YnNldHRpbmcgYSBkYXRhIGZyYW1lDQpgYGB7ciBkYXRhZnJhbWVfc3Vic2V0fQ0KY3Jhc2hlc19kZiA9IHRpYmJsZTo6dGliYmxlKA0KICBkYXkgICAgID0gbmFtZXMoY3Jhc2hlc19ieV9kYXkpLA0KICBjcmFzaGVzID0gY3Jhc2hlc19ieV9kYXksDQogIGJ1c3kgICAgPSBjcmFzaGVzX2J5X2RheSA+IDIwMDApDQpjcmFzaGVzX2RmJGNyYXNoZXMgICAgICAgICAgICAgICAgICAgICAjIG9uZSBjb2x1bW4sIGFzIGEgdmVjdG9yDQoNCmNyYXNoZXNfZGZbWyJjcmFzaGVzIl1dICAgICAgICAgICAgICAgICMgdGhlIHNhbWUgdmVjdG9yLCBieSBuYW1lDQoNCmNyYXNoZXNfZGZbMToyLCBjKCJkYXkiLCAiY3Jhc2hlcyIpXSAgICMgcm93cyAxIHRvIDIsIHR3byBjb2x1bW5zDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjIFsxOjJdIHJlZmVycyB0byBNb24vVHVlIHJvd3MsIGRheSBhbmQgY3Jhc2hlcyBhcmUgdGhlIGNvbHVtbnMgZnJvbSB0aG9zZSByb3dzDQoNCmBgYA0KDQoNCg0KDQoNCg0K</div>
 
 
 </div>
@@ -1668,7 +1765,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("03_r_basics.Rmd");
+  window.initializeSourceEmbed("04_r_dataframes.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
