@@ -1,0 +1,74 @@
+---
+title: "Class 5"
+output: 
+  html_document:
+    toc: true 
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: true
+date: "2026-09-09"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Question-1}
+campus = jsonlite::fromJSON(
+  "https://isa401-find-your-seat.vercel.app/campus.json")
+campus$Farmer$code
+```
+
+
+```{r Question-2}
+campus$Farmer$floors$`2`$sections
+```
+
+```{r Question-3}
+rooms = campus$Farmer$floors$`2`$rooms
+rooms$isa_sections[rooms$room == "2050"]
+
+```
+
+## Reading the excel file
+```{r read_excel_file}
+occupation = readxl::read_excel(
+                                path = "../data/occupation.xlsx",
+                                sheet = "Table 1.4" ,
+                                skip = 1)
+# this subset is to drop these specific rows
+# Note the comma after the brackets with nothing after it.
+# This means look at the specific rows and use all columns
+occupation = occupation[-c(32,33,34), ]
+dplyr::glimpse(occupation)
+
+```
+
+## Reading a web JSON file
+```{r Web_JSON}
+json_url = paste0(
+  "https://data.cincinnati-oh.gov/",
+  "resource/rvmt-pkmq.json?$limit=100")
+crashes_json = jsonlite::fromJSON(json_url)
+dplyr::glimpse(
+  crashes_json[, c("crashdate", "dayofweek",
+                   "crashseverity", "age")])
+```
+
+```{r cybersecurity_game}
+logins = readr::read_csv("https://isa401-import-heist.vercel.app/api/stage1")
+most_failed = logins$failed_attempts == max(logins$failed_attempts)
+most_failed
+max(logins$failed_attempts)
+
+log = jsonlite::fromJSON("https://isa401-import-heist.vercel.app/api/stage2?key=smithj31")
+
+event = log$events
+```
+
+```{r game_question_2}
+jsonlite::fromJSON("https://isa401-import-heist.vercel.app/api/finish?code=6")
+```
+
+
