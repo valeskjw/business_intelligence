@@ -1,0 +1,52 @@
+---
+title: "Homework 4"
+output: 
+  html_document:
+    toc: true 
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: true
+date: "2026-09-10"
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r Question_1}
+con = DBI::dbConnect(RSQLite::SQLite(), "../data/midwest_airbnb.db")
+listings = DBI::dbReadTable(con, "listings")
+nrow(listings)
+```
+
+
+```{r Question_2}
+Col = listings[listings$city == "Columbus", ]
+
+Col
+```
+
+```{r Question_3}
+chicago = listings[listings$city == "Chicago", ]
+Expensive = chicago[chicago$price == max(chicago$price),]
+Expensive
+```
+```{r Question_4}
+neighborhoods = unique(chicago$neighbourhood, )
+neighborhoods
+length(neighborhoods)
+```
+```{r Question_5}
+super_host = listings[listings$host_is_superhost == "t", ]
+super_host
+nrow(super_host)
+```
+
+```{r Quetion_6}
+Expensive = listings[listings$price > 1000, ]
+Expensive
+nrow(Expensive)
+```
+
+
+
