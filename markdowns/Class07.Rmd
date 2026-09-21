@@ -63,6 +63,25 @@ jobs
 ```
 
 
+```{r Airbnb_Listings}
+# 4. Which five host_names have the most listings?
+con = DBI::dbConnect(RSQLite::SQLite(), "../data/midwest_airbnb.db")
+listings = DBI::dbReadTable(con, "listings") |>
+  tibble::as_tibble()
+DBI::dbDisconnect(con)
+
+
+hosts = listings |> 
+  dplyr::group_by(host_name, host_id) |> 
+  dplyr::summarise(
+    count = dplyr::n()
+  ) |> 
+  dplyr::arrange(dplyr::desc(count))
+
+hosts
+```
+
+
 
 
 
