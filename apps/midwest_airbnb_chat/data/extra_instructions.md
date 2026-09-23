@@ -3,6 +3,8 @@
 Rules the LLM follows when it writes SQL for `listings`.
 
 - `price` is the nightly price in U.S. dollars. When the user asks what something costs, use `price` and round money to whole dollars in the answer.
+- `accommodates` is the maximum number of people the listing can host. Use `accommodates` if asked a question about a certain number of guests or visitors.
+
 
 <!-- Add more rules below (Assignment 05 asks for at least three). Good candidates:
      `host_is_superhost` and `instant_bookable` are the text values 't' and 'f',
