@@ -10,6 +10,8 @@ license: mit
 short_description: Ask questions about ChatISA Job Scout postings
 ---
 
+**Live app:** https://midwest-airbnb-chat-ujv9.onrender.com
+
 # ISA 401 Job Scout Chat
 
 **Ask a question in plain English, get the SQL and a table back**
