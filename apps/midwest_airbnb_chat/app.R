@@ -20,7 +20,7 @@ qc = querychat::querychat(
 )
 
 ui = page_sidebar(
-  title   = "Chicago-Columbus-Twin Cities Airbnb Chat",
+  title   = "Testing Render",
   theme = bs_theme(
     version = 5,
     bootswatch = "minty"
