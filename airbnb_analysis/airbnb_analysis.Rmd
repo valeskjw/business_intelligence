@@ -1,0 +1,190 @@
+---
+title: "Homework 06"
+output: 
+  html_document:
+    toc: true 
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: true
+date: "2026-09-24"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r DBConnect}
+con = DBI::dbConnect(RSQLite::SQLite(), "../data/midwest_airbnb_extended.db")
+listings     = DBI::dbReadTable(con, "listings") |> tibble::as_tibble()
+availability = DBI::dbReadTable(con, "availability_monthly") |> tibble::as_tibble()
+reviews      = DBI::dbReadTable(con, "reviews_monthly") |> tibble::as_tibble()
+DBI::dbDisconnect(con)
+```
+
+## Task 1
+```{r Task1}
+# Who owns the market. Count listings per host_id across all three cities and join the count back to the listings. Report how many hosts have 10 or more listings [A1], and what percent of Chicago's listings those hosts hold [A2].
+
+count = listings |> 
+  dplyr::group_by(host_id) |> 
+  dplyr::summarize(
+    num = dplyr::n()
+  ) |> 
+  dplyr::arrange(dplyr::desc(num))
+
+count
+
+ten_or_more = count |> 
+  dplyr::filter(num >= 10)
+
+nrow(ten_or_more)
+
+listings_with_count = listings |> 
+  dplyr::left_join(count, by = "host_id")
+
+chicago_ten_or_more = listings_with_count |> 
+  dplyr::filter(
+    city == "Chicago",
+    num >= 10
+  )
+
+nrow(chicago_ten_or_more) / nrow(listings |> dplyr::filter(city == "Chicago"))
+
+```
+
+## Task 2
+```{r Task2}
+# Value for a family of four. Keep entire homes (room_type == "Entire home/apt") that sleep at least 4 (accommodates >= 4), have at least 10 reviews, and a rating of at least 4.8. Add price_per_person = price / accommodates, take the median per city and neighbourhood, and keep only neighbourhoods with at least 20 such listings. Report the Columbus neighbourhood with the lowest median price per person [A3].
+
+sorted = listings |> 
+  dplyr::filter(
+    room_type == "Entire home/apt",
+    accommodates >= 4,
+    number_of_reviews >= 10,
+    review_scores_rating >= 4.8
+  ) |> 
+  dplyr::mutate(
+    price_per_person = price / accommodates
+  )
+
+sorted = sorted |> 
+  dplyr::group_by(city, neighbourhood) |> 
+  dplyr::summarise(
+    median_price_per_person = median(price_per_person),
+    num_listings = dplyr::n()
+  )
+
+sorted = sorted |> 
+  dplyr::filter(num_listings >= 20)
+
+sorted
+
+columbus = sorted |> 
+  dplyr::filter(city == "Columbus") |> 
+  dplyr::arrange(median_price_per_person)
+
+columbus
+  
+
+```
+
+## Task 3
+```{r Task3}
+# What earns. By city and room type, compute the median price, reviews_per_month, and estimated_revenue_l365d in one summarize call, using dplyr::across() and skipping NAs. Report the median estimated revenue of Twin Cities entire homes [A4].
+
+earnings = listings |> 
+  dplyr::group_by(city, room_type) |> 
+  dplyr::summarise(
+    dplyr::across(
+      c(price, reviews_per_month, estimated_revenue_l365d),
+      ~ median(.x, na.rm = TRUE)
+    )
+  )
+
+earnings
+
+twin_cities = earnings |> 
+  dplyr::filter(
+    city == "Twin Cities",
+    room_type == "Entire home/apt"
+  )
+
+twin_cities
+```
+
+## Task 4
+```{r Task4}
+# Concentration. Within each city, sort listings by estimated_revenue_l365d, largest first, and mark the top 10 percent (the cutoff is ceiling(0.10 * dplyr::n()) rows). Report the percent of Columbus's total estimated revenue earned by its top 10 percent [A5].
+top_ten = listings |> 
+  dplyr::group_by(city) |> 
+  dplyr::arrange(
+    dplyr::desc(estimated_revenue_l365d)
+  ) |> 
+  dplyr::mutate(
+    cutoff = ceiling(0.10 * dplyr::n()),
+    rank = dplyr::row_number(),
+    top_10 = rank <= cutoff
+  )
+
+top_ten
+
+columbus = top_ten |> 
+  dplyr::filter(city == "Columbus")
+
+total_sum = sum(
+  listings |> 
+    dplyr::filter(city == "Columbus") |> 
+    dplyr::pull(estimated_revenue_l365d),
+  na.rm = TRUE
+)
+
+sum(
+  columbus$estimated_revenue_l365d[columbus$top_10],
+  na.rm = TRUE
+) / total_sum
+
+```
+
+# Task 5
+```{r Task5}
+# The year ahead. Join the October 2026 rows of availability (month == "2026-10") to the entire-home listings. Call a listing mostly taken when nights_available < 0.5 * nights_in_month. Report the city with the lowest share of mostly-taken entire homes [A6] and that share [A7].
+october = availability |> 
+  dplyr::filter(month == "2026-10") |> 
+  dplyr::inner_join(
+    listings |> 
+      dplyr::filter(room_type == "Entire home/apt"),
+    by = "id"
+  )
+
+october
+
+october = october |> 
+  dplyr::mutate(
+    mostly_taken = nights_available < 0.5 * nights_in_month
+  )
+
+october
+
+shares = october |> 
+  dplyr::group_by(city) |> 
+  dplyr::summarise(
+    share = mean(mostly_taken, na.rm = TRUE) * 100
+  ) |> 
+  dplyr::arrange(share)
+
+shares
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
