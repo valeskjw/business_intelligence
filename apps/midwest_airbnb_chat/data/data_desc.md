@@ -18,7 +18,6 @@
 | `name` | text | Listing title as shown on Airbnb (for example "Tiny Studio Apartment 94 Walk Score"). Never empty. |
 | `price` | real | Nightly price in U.S. dollars on the snapshot date, with the dollar sign and commas removed. Ranges from 2.56 to 11,412; never `NULL` (rows without a price were dropped). |
 | `room_type` | text | Airbnb's four listing categories: `Entire home/apt` (11,652 rows), `Private room` (2,951), `Hotel room` (246), or `Shared room` (38). |
-
 | `host_id` | integer | Airbnb's unique identifier for the host/user |
 | `host_name` | text | Name of the host. Usually just the first name(s). |
 | `host_since` | date | The date the host/user was created. For hosts that are Airbnb guests this could be the date they registered as a guest. |
@@ -37,10 +36,8 @@
 | `number_of_reviews_ltm` | integer | The number of reviews the listing has (in the last 12 months) |
 | `first_review` | date | The date of the first/oldest review |
 | `last_review` | date | The date of the last/newest review |
-| `review_scores_rating` |  |  |
 | `reviews_per_month` | numeric | The average number of reviews per month the listing has over the lifetime of the listing. Psuedocoe/~SQL: IF scrape_date - first_review <= 30 THEN number_of_reviews ELSE number_of_reviews / ((scrape_date - first_review + 1) / (365/12)) |
 | `instant_bookable` | boolean | [t=true; f=false]. Whether the guest can automatically book the listing without the host requiring to accept their booking request. An indicator of a commercial listing. |
-| `estimated_revenue_l365d` |  |  |
 | `amenities_count` | numeric | the number of items in each listing's `amenities` list. |
 
 Continue the table for the remaining 23 columns (Assignment 05): `host_id`, `host_name`, `host_since`, `host_is_superhost`, `neighbourhood`, `latitude`, `longitude`, `property_type`, `accommodates`, `bedrooms`, 
