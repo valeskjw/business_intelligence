@@ -1,0 +1,1 @@
+Chicago loses the most in a join with availability. It loses 267

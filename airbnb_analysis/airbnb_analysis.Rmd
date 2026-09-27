@@ -13,6 +13,7 @@ date: "2026-09-24"
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
 ```{r DBConnect}
 con = DBI::dbConnect(RSQLite::SQLite(), "../data/midwest_airbnb_extended.db")
 listings     = DBI::dbReadTable(con, "listings") |> tibble::as_tibble()
@@ -20,6 +21,7 @@ availability = DBI::dbReadTable(con, "availability_monthly") |> tibble::as_tibbl
 reviews      = DBI::dbReadTable(con, "reviews_monthly") |> tibble::as_tibble()
 DBI::dbDisconnect(con)
 ```
+
 
 ## Task 1
 ```{r Task1}
@@ -52,6 +54,8 @@ nrow(chicago_ten_or_more) / nrow(listings |> dplyr::filter(city == "Chicago"))
 
 ```
 
+
+
 ## Task 2
 ```{r Task2}
 # Value for a family of four. Keep entire homes (room_type == "Entire home/apt") that sleep at least 4 (accommodates >= 4), have at least 10 reviews, and a rating of at least 4.8. Add price_per_person = price / accommodates, take the median per city and neighbourhood, and keep only neighbourhoods with at least 20 such listings. Report the Columbus neighbourhood with the lowest median price per person [A3].
@@ -81,7 +85,7 @@ sorted
 
 columbus = sorted |> 
   dplyr::filter(city == "Columbus") |> 
-  dplyr::arrange(median_price_per_person)
+  dplyr::arrange(dplyr::desc(median_price_per_person))
 
 columbus
   
@@ -175,6 +179,84 @@ shares = october |>
 shares
 
 ```
+
+# Task 6
+```{r Task6}
+# Demand by season. Join reviews to the listings, keep July 2025 through June 2026, and total the reviews per city and month. Report the Twin Cities' busiest month [A8] and the ratio of its busiest month to its quietest [A9].
+
+demand = reviews |> 
+  dplyr::inner_join(
+    listings,
+    by = "id"
+  ) |> 
+  dplyr::filter(
+    month >= "2025-07",
+    month <= "2026-06"
+  )
+
+demand = demand |> 
+  dplyr::group_by(city, month) |> 
+  dplyr::summarise(
+    total_reviews = dplyr::n(),
+  )
+
+demand
+
+
+twin_cities = demand |> 
+  dplyr::filter(city == "Twin Cities") |> 
+  dplyr::arrange(dplyr::desc(total_reviews))
+
+twin_cities
+
+ratio = max(twin_cities$total_reviews) / min(twin_cities$total_reviews)
+ratio
+```
+
+# Task 7
+```{r task7}
+# The Superhost premium. Among entire homes with a known host_is_superhost ("t" or "f", not NA), compute the median price and median rating for superhosts and for other hosts in each city. The premium is the superhost median price minus the other-host median price, in dollars. You report the three premiums in your answer to B1.
+
+superhost = listings |> 
+  dplyr::filter(
+    room_type == "Entire home/apt",
+    !is.na(host_is_superhost)
+  ) |> 
+  dplyr::group_by(city, host_is_superhost) |> 
+  dplyr::summarise(
+    median_price = median(price, na.rm = TRUE),
+    median_rating = median(review_scores_rating, na.rm = TRUE),
+  )
+
+superhost
+
+```
+
+
+# Task 8
+```{r task8}
+# What the join lost. Use dplyr::anti_join() to count the listings that have no rows in availability [A10], and say in your README which city loses the most.
+
+missing = listings |> 
+  dplyr::anti_join(
+    availability,
+    by = "id"
+  )
+
+nrow(missing)
+
+missing_city = missing |> 
+  dplyr::group_by(city) |> 
+  dplyr::summarise(
+    missing_count = dplyr::n(),
+  ) |> 
+  dplyr::arrange(dplyr::desc(missing_count))
+
+missing_city
+
+
+```
+
 
 
 
