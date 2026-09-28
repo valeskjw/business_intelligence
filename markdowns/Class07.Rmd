@@ -62,23 +62,44 @@ jobs = postings |>
 jobs
 ```
 
-
 ```{r Airbnb_Listings}
-# 4. Which five host_names have the most listings?
 con = DBI::dbConnect(RSQLite::SQLite(), "../data/midwest_airbnb.db")
 listings = DBI::dbReadTable(con, "listings") |>
   tibble::as_tibble()
 DBI::dbDisconnect(con)
+dplyr::glimpse(listings)
 
+city_listings = listings |> 
+  dplyr::group_by(city) |> 
+  dplyr::summarise(number = dplyr::n()) |> 
+  dplyr::arrange(dplyr::desc(number))
 
-hosts = listings |> 
-  dplyr::group_by(host_name, host_id) |> 
-  dplyr::summarise(
-    count = dplyr::n()
+city_listings
+
+# or
+
+listings |>  dplyr::count(city)
+
+# or
+# count the number of times that each city occurred in the col city
+
+table(listings$city)
+```
+
+```{r Airbnb_listings_q2}
+#  For entire homes (room_type == "Entire home/apt") that sleep four or more, what is the median price in each city?
+entire_homes = listings |> 
+  dplyr::group_by(city) |> 
+  dplyr::filter(
+    room_type == "Entire home/apt",
+    accommodates >= 4
   ) |> 
-  dplyr::arrange(dplyr::desc(count))
+  dplyr::summarise(
+    median_price = median(price)
+  ) |> 
+  dplyr::arrange(dplyr::desc(median_price))
 
-hosts
+entire_home
 ```
 
 

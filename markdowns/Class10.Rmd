@@ -1,0 +1,87 @@
+---
+title: "Class 10"
+output: 
+  html_document:
+    toc: true 
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: true
+date: "2026-09-28"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r robots}
+robotstxt::paths_allowed(paths = "/courses-instruction/isa/", domain = "bulletin.miamioh.edu", bot = "*")
+# Returns true meaning that the path is allowed by the site owner
+
+robotstxt::paths_allowed(paths = "/wiki/Miami_RedHawks_football", domain = "en.wikipedia.org", bot = "*") # True
+
+# In some cases, the robotstxt provides inconsistent answers, typically you get a warning with the answer that is 
+# Incorrect, to solve -> drop the trailing slash from the URL, to be completely sure, check with robots.txt
+# on the actual web page
+robotstxt::paths_allowed(paths = "	/jobs/", domain = "www.linkedin.com", bot = "*") # False
+
+robotstxt::paths_allowed(paths = "/jobs", domain = "www.indeed.com", bot = "*") # True
+
+robotstxt::paths_allowed(paths = "/viewjob", domain = "www.indeed.com", bot = "*") # False
+```
+
+```{r scraping_workflow}
+wiki_url = "https://en.wikipedia.org/wiki/Miami_RedHawks_football"
+robotstxt::paths_allowed(paths = "/wiki/Miami_RedHawks_football",
+                         domain = "en.wikipedia.org", bot = "*")
+
+page = rvest::read_html(wiki_url)
+
+wiki_page = httr2::request(wiki_url) |>
+  httr2::req_user_agent("ISA 401 class scraper (your_email@miamioh.edu)") |>
+  httr2::req_perform() |>
+  httr2::resp_body_html()
+```
+
+
+# Scrape Miami's Bulletin for ISA
+```{r bulletin}
+# checking whether or not we are allowed to scrape
+# Load the backend of the HTML into R using 
+# [a] rvest::read_html if the page has dynamic content
+# [b] httr2::request() > ... > httr2::resp_body_html()
+
+isa_courses_in_r = rvest::read_html("https://bulletin.miamioh.edu/courses-instruction/isa/")
+
+isa_courses_in_r
+
+# we will extract the course titles which we can do in a single pipeline
+# given that they look the same on the rendered webpage in chrome
+# (bolded, same font size, same font type)
+
+
+# CSS selector was obtained by:
+# highlighting what we wanted to pull, click inspect
+# right clicked copy -> copy selector selector -> "#sc_sccoursedescs > div:nth-child(24) > p.courseblocktitle
+isa_courses_in_r |> 
+  rvest::html_elements("#sc_sccoursedescs > div:nth-child(24) > p.courseblocktitle") # output here is just ISA 401 because we have 
+                                                                                     # "nth-child" meaning 24th course in list
+
+isa_courses_in_r |> 
+  rvest::html_elements("#sc_sccoursedescs > div > p.courseblocktitle")  |> # This gives all 50
+  rvest::html_text2() -> isa_titles # This gives just the plain english html text
+  
+isa_titles
+
+
+
+# Course Descriptions [using selector gadget]
+isa_courses_in_r |> 
+  rvest::html_elements(".courseblockdesc")  |> # This gives all 50
+  rvest::html_text2() -> isa_descriptions
+
+isa_descriptions
+```
+
+
+
