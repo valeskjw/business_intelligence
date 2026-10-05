@@ -1,0 +1,74 @@
+---
+title: "Class 12"
+output: 
+  html_document:
+    toc: true 
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: true
+date: "2026-10-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r continue_plane_Crash_info}
+year = 2025
+
+crash_url = paste0('https://www.planecrashinfo.com/', year, '/', year, '.htm')
+
+crash_page <- rvest::read_html(crash_url, encoding = "ISO-8859-1")
+
+# This should now print without the error
+crash_page
+
+crash_tables <- crash_page |>
+  rvest::html_elements("table") |>
+  rvest::html_table()
+
+crash_tables
+
+# Translate this into a df with correct column names
+# Convert data into a date column instead of chr
+# More complex cleaning to split multiple information within a cell into seperate columns
+
+crash_df = crash_tables[[1]]
+colnames(crash_df) = crash_df[1,]
+# delete the first row
+crash_df = crash_df[-1,]
+# Convert date column into date type object
+crash_df = crash_df |> 
+  dplyr::mutate(Date = lubridate::dmy(Date))
+```
+
+```{r Practice_q1}
+page = rvest::read_html("https://isa401-salvage.vercel.app/registry?start=1")
+classes = page |>
+  rvest::html_elements(".Dreadnought") |>
+  rvest::html_text2()
+length(classes)
+```
+
+```{r Practice_q3}
+base = "https://isa401-salvage.vercel.app"
+starts = seq(from = 1, to = 400, by = 50)
+pages = vector("list", length(starts))
+for (i in seq_along(starts)) {
+  pg = rvest::read_html(paste0(base, "/registry?start=", starts[i]))
+  pg |> rvest::html_elements(".salvage-value") |> rvest::html_text2() -> value
+  
+  pages[[i]] = data.frame(
+    class = ".Dreadnought",
+    value = value|> readr::parse_number()
+  )
+  Sys.sleep(1)   # robots.txt asks for it
+}
+registry = dplyr::bind_rows(pages)
+nrow(registry)
+```
+
+
+
+
