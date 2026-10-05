@@ -57,16 +57,20 @@ starts = seq(from = 1, to = 400, by = 50)
 pages = vector("list", length(starts))
 for (i in seq_along(starts)) {
   pg = rvest::read_html(paste0(base, "/registry?start=", starts[i]))
-  pg |> rvest::html_elements(".salvage-value") |> rvest::html_text2() -> value
-  
   pages[[i]] = data.frame(
-    class = ".Dreadnought",
-    value = value|> readr::parse_number()
+    class = pg |>  rvest::html_elements("div > ul > li:nth-child(1) > span") |> 
+      rvest::html_text2(),
+    value = pg |>  rvest::html_elements("div > ul > li:nth-child(3) > span") |> 
+      rvest::html_text2() |> readr::parse_number()
   )
   Sys.sleep(1)   # robots.txt asks for it
 }
 registry = dplyr::bind_rows(pages)
-nrow(registry)
+
+dread_df = registry |> 
+  dplyr::filter(class == "Dreadnought")
+
+sum(dread_df$value)
 ```
 
 
