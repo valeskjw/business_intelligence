@@ -1,0 +1,49 @@
+---
+title: "Class 13"
+output: 
+  html_document:
+    toc: true 
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: true
+date: "2026-10-07"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r tidy_tc_crashes}
+year = 2025
+
+crash_url = paste0('https://www.planecrashinfo.com/', year, '/', year, '.htm')
+
+crash_page <- rvest::read_html(crash_url, encoding = "ISO-8859-1")
+
+# What we learned last class is that if I were to read this as an html table, I have no control on what goes into each column
+# in the resulting data frame -- this makes cleaning it more challenging (extracting text more challenging)
+
+crash_page |> rvest::html_elements("tr > td:nth-child(1) > font > a") |> 
+  rvest::html_text2() -> dates
+
+crash_page |> rvest::html_elements("tr > td:nth-child(2) > font") |> 
+  rvest::html_text2() -> loc_op
+
+# Skipping 3rd, its the same
+
+crash_page |> rvest::html_elements("tr > td:nth-child(4) > font") |> 
+  rvest::html_text2() -> fatalities
+
+df = data.frame(dates = dates, location = loc_op[-1], fatalities = fatalities[-1]) |> 
+  tidyr::separate(
+    location, into = c("location", "operator", sep = "\n")
+  ) |> 
+  tidyr::separate(
+    fatalities, into = c("plane_fatalities", "pass", "ground_fat")
+  )
+
+
+```
+

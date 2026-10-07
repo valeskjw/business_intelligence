@@ -74,5 +74,72 @@ sum(dread_df$value)
 ```
 
 
+```{r using_llm}
+url = "https://bulletin.miamioh.edu/courses-instruction/isa/"
+course_text = rvest::read_html(url) |> rvest::html_elements("#sc_sccoursedescs > div:nth-child(1)") |> rvest::html_text2()
+
+type_course = ellmer::type_object(
+  code = ellmer::type_string(
+    "Subject and number. For example, ISA 401"
+  ),
+  name = ellmer::type_string(
+    "Name of the course, without the code"
+  ),
+  credit_hours = ellmer::type_integer(
+    "The number in parentheses after the name",
+    required = FALSE
+  ),
+  prereqs = ellmer::type_string(
+    "The prerequisite[s] for this course",
+    required = FALSE
+  )
+)
+
+chat = ellmer::chat_openai(
+  model = "gpt-5.6-luna"
+)
+chat$chat_structured(
+  course_text, type = type_course
+)
+
+```
+
+# All ISA Courses
+```{r All_Isa_Courses}
+ISA_Courses = list(rvest::read_html(url) |> rvest::html_elements(".courseblock") |> rvest::html_text2())
+
+print(ISA_Courses)
+
+type_course = ellmer::type_object(
+  code = ellmer::type_string(
+    "Subject and number for each. For example, ISA 401"
+  ),
+  name = ellmer::type_string(
+    "Name of the courses, without the code"
+  ),
+  credit_hours = ellmer::type_integer(
+    "The numbers in parentheses after the name",
+    required = FALSE
+  ),
+  prereqs = ellmer::type_string(
+    "The prerequisite[s] for the courses",
+    required = FALSE
+  )
+)
+
+chat = ellmer::chat_openai(
+  model = "gpt-5.6-luna"
+)
+
+isa_df = ellmer::parallel_chat_structured(
+  chat, prompts = ISA_Courses, type = type_course
+)
+
+
+print(isa_df)
+
+```
+
+
 
 
