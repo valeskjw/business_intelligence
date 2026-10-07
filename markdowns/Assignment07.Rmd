@@ -1,0 +1,61 @@
+---
+title: "Assignment 07"
+output: 
+  html_document:
+    toc: true 
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: true
+date: "2026-10-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r department_info}
+url = "https://miamioh.edu/fsb/directory/?up=/query/all/all/"
+departments = c("Accountancy", "Economics", "Entrepreneurship", "Finance", "Information Systems -- Analytics", "Marketing", "Management")
+
+results = data.frame()
+
+for (department in departments) {
+  dep_url = paste0(url, URLencode(department), "/all")
+  wp = rvest::read_html(dep_url)
+  
+  department_name = wp |>
+    rvest::html_elements("table td:nth-child(1)") |>
+    rvest::html_text2()
+  
+  names = wp |>
+    rvest::html_elements("table td:nth-child(3) a") |>
+    rvest::html_text2()
+  
+  positions = wp |>
+    rvest::html_elements("table td:nth-child(3) i") |>
+    rvest::html_text2()
+  
+  websites = wp |>
+    rvest::html_elements("table td:nth-child(3) a") |>
+    rvest::html_attr("href")
+  
+  temp = data.frame(
+    Department = department_name,
+    Person = names,
+    Position = positions,
+    Website = websites
+  )
+  print("-----------------------------------")
+  print(department)
+  print(nrow(temp))
+  print(dep_url)
+  
+  results = rbind(results, temp)
+}
+
+head(results)
+  
+  
+```
+
