@@ -1,0 +1,166 @@
+---
+title: "exam01"
+output: 
+  html_document:
+    toc: true 
+    toc_float: true
+    number_sections: true
+    code_folding: show
+    code_download: true
+date: "2026-10-12"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r question1}
+penguins = readr::read_csv("https://raw.githubusercontent.com/fmegahed/isa401/main/data/penguin_captures.csv")
+
+penguins |>
+  dplyr::distinct(band, .keep_all = TRUE) |>
+  dplyr::group_by(species) |>
+  dplyr::summarise(count = dplyr::n())
+```
+
+```{r 3}
+crashes_by_day = c(2020, 2241, 2327, 2285, 2380, 2000, 1664)
+names(crashes_by_day) = c("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+sum(crashes_by_day > 300)
+```
+
+```{r 6}
+library(httr2)
+
+resp <- request("https://data.cincinnati-oh.gov/resource/rvmt-pkmq.json") |>
+  req_url_query(
+    `$select` = "count(*) AS n",
+    `$where` = "crashdate >= '2026-07-01T00:00:00' AND crashdate < '2026-08-01T00:00:00'"
+  ) |>
+  req_perform() |>
+  resp_body_json() -> result
+
+result[[1]]$n
+
+
+```
+
+```{r 6-2}
+resp <- request("https://data.cincinnati-oh.gov/resource/rvmt-pkmq.json") |>
+   httr2::req_url_query() |>
+   httr2::req_perform() |>
+   httr2::resp_body_json()
+
+july = resp |>
+  dplyr::bind_rows() |>
+  dplyr::filter(
+    crashdate >= "2026-07-01",
+    crashdate < "2026-08-01"
+  )
+
+nrow(july)
+```
+
+```{r 63}
+library(httr2)
+
+req <- request("https://data.cincinnati-oh.gov/resource/rvmt-pkmq.json") |>
+  req_url_query(
+    `$select` = "count(*) as n",
+    `$where` = "crashdate >= '2026-07-01T00:00:00' AND crash_date < '2026-08-01T00:00:00'"
+  ) |> 
+  req_perform() |> 
+  resp_body_json()
+
+```
+
+
+```{r 7}
+base = "https://isa401-salvage.vercel.app/exam"
+starts = seq(from = 1, to = 360, by = 40)
+pages = vector("list", length(starts))
+num = 0
+for (i in seq_along(starts)) {
+  pg = rvest::read_html(paste0(base, "/registry?start=", starts[i]))
+  classes = pg |>
+  rvest::html_elements(".Dreadnought") |>
+  rvest::html_text2()
+  length(classes)
+  Sys.sleep(1)   # robots.txt asks for it
+  num = num + (length(classes))
+}
+
+print(num)
+```
+
+```{r 72}
+base = "https://isa401-salvage.vercel.app"
+starts = seq(from = 1, to = 360, by = 40)
+classes = c()
+
+for (i in seq_along(starts)) {
+  pg = rvest::read_html(paste0(base, "/registry?start=", starts[i]))
+
+  classes = c(classes,
+    pg |>
+      rvest::html_elements("div > ul > li:nth-child(1) > span") |>
+      rvest::html_text2()
+  )
+
+  Sys.sleep(1)   # robots.txt asks for it
+}
+
+classes = unique(classes)
+print(classes)
+```
+
+```{r 8}
+ncse_tbl = readr::read_csv("https://raw.githubusercontent.com/fmegahed/isa401/main/data/ncse_endowment_us_and_canada_2025.csv")
+dplyr::glimpse(ncse_tbl)
+```
+
+```{r 10}
+jobs = data.frame(
+  months = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5),
+  other_thing = c(1, 2, 3, 1, 5, 6, 7, 8, 4, 4, 4, 4,4, 4, 4, 4, 4)
+)
+jobs |>
+  dplyr::group_by(months) |>
+  dplyr::summarise(postings = dplyr::n())
+```
+
+```{r 11}
+library(ellmer)
+
+# 1. Create a chat object
+chat = ellmer::chat_openai(
+  model = "gpt-5.6-luna"
+)
+
+# 2. Define the Airbnb listing description
+description <- "This one of a kind, turn of the century, fully restored mansion is just waiting for you to come and enjoy the vast amenities this house offers! This historic Victorian Mansion was built in the last 1800's and has been fully restored and updated with one thing in mind--luxury! We boast a slate pool table, 10 person hot tub, a custom made fire table, a built in giant projector screen for streaming, arcade games, and much much more! We comfortably sleep 19 guests with 9 dedicated bedrooms."
+
+# 3. Define the structured output schema
+schema <- ellmer::type_object(
+  property_type = ellmer::type_string(),
+  max_guests = ellmer::type_integer(),
+  num_bedrooms = ellmer::type_integer(),
+  key_amenities = ellmer::type_string(
+    "List key amenities separated by |"
+  )
+)
+
+# 4. Extract structured information
+result <- chat$chat_structured(
+  description,
+  type = schema
+)
+
+# 5. Display results
+print(result)
+```
+
+
+
+
+

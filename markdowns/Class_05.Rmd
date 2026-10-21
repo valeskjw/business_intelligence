@@ -17,12 +17,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r Question-1}
 campus = jsonlite::fromJSON(
   "https://isa401-find-your-seat.vercel.app/campus.json")
-campus$Farmer$code
-```
+sections = campus$Farmer$floors$`1`$sections
 
+print(sections)
 
-```{r Question-2}
-campus$Farmer$floors$`2`$sections
 ```
 
 ```{r Question-3}
