@@ -1,0 +1,402 @@
+<?xml version='1.0' encoding='utf-8' ?>
+
+<!-- build 20262.26.0603.1643                               -->
+<workbook original-version='18.1' source-build='2026.2.0 (20262.26.0603.1643)' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <document-format-change-manifest>
+    <AnimationOnByDefault />
+    <CascadingFiltersHamburgerUI />
+    <MapboxVectorStylesAndLayers />
+    <MarkAnimation />
+    <ObjectModelEncapsulateLegacy />
+    <ObjectModelTableType />
+    <SchemaViewerObjectModel />
+    <SheetIdentifierTracking />
+    <WindowsPersistSimpleIdentifiers />
+  </document-format-change-manifest>
+  <preferences>
+    <preference name='ui.encoding.shelf.height' value='24' />
+    <preference name='ui.shelf.height' value='26' />
+  </preferences>
+  <datasources>
+    <datasource caption='covid_cases_county' inline='true' name='federated.06alqoj0wcr1kk12mtoxp1xspbjz' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='covid_cases_county' name='textscan.0cm1b6z1jy0ywn12ewrqd19ke38x'>
+            <connection class='textscan' directory='C:/Users/valeskjw/Downloads' filename='covid_cases_county.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.0cm1b6z1jy0ywn12ewrqd19ke38x' name='covid_cases_county.csv' table='[covid_cases_county#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='en_US' separator=','>
+            <column datatype='date' name='date' ordinal='0' />
+            <column datatype='string' name='state' ordinal='1' />
+            <column datatype='string' name='county' ordinal='2' />
+            <column datatype='integer' name='population' ordinal='3' />
+            <column datatype='integer' name='confirmed_cases' ordinal='4' />
+          </columns>
+        </relation>
+        <metadata-records>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[covid_cases_county.csv]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='character-set'>&quot;UTF-8&quot;</attribute>
+              <attribute datatype='string' name='collation'>&quot;en_US&quot;</attribute>
+              <attribute datatype='string' name='field-delimiter'>&quot;,&quot;</attribute>
+              <attribute datatype='string' name='header-row'>&quot;true&quot;</attribute>
+              <attribute datatype='string' name='locale'>&quot;en_US&quot;</attribute>
+              <attribute datatype='string' name='single-char'>&quot;&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>date</remote-name>
+            <remote-type>133</remote-type>
+            <local-name>[date]</local-name>
+            <parent-name>[covid_cases_county.csv]</parent-name>
+            <remote-alias>date</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[covid_cases_county.csv_E9DC7DD5571045819CEF54611EC383D0]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>state</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[state]</local-name>
+            <parent-name>[covid_cases_county.csv]</parent-name>
+            <remote-alias>state</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+            <object-id>[covid_cases_county.csv_E9DC7DD5571045819CEF54611EC383D0]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>county</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[county]</local-name>
+            <parent-name>[covid_cases_county.csv]</parent-name>
+            <remote-alias>county</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
+            <object-id>[covid_cases_county.csv_E9DC7DD5571045819CEF54611EC383D0]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>population</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[population]</local-name>
+            <parent-name>[covid_cases_county.csv]</parent-name>
+            <remote-alias>population</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[covid_cases_county.csv_E9DC7DD5571045819CEF54611EC383D0]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>confirmed_cases</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[confirmed_cases]</local-name>
+            <parent-name>[covid_cases_county.csv]</parent-name>
+            <remote-alias>confirmed_cases</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[covid_cases_county.csv_E9DC7DD5571045819CEF54611EC383D0]</object-id>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='covid_cases_county.csv' datatype='table' name='[__tableau_internal_object_id__].[covid_cases_county.csv_E9DC7DD5571045819CEF54611EC383D0]' role='measure' type='quantitative' />
+      <column caption='Confirmed Cases' datatype='integer' name='[confirmed_cases]' role='measure' type='quantitative' />
+      <column caption='County' datatype='string' name='[county]' role='dimension' semantic-role='[County].[Name]' type='nominal' />
+      <column caption='Date' datatype='date' name='[date]' role='dimension' type='ordinal' />
+      <column caption='Population' datatype='integer' name='[population]' role='measure' type='quantitative' />
+      <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+      <drill-paths>
+        <drill-path name='state, county'>
+          <field>[state]</field>
+          <field>[county]</field>
+        </drill-path>
+      </drill-paths>
+      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;United States&quot;' />
+      </semantic-values>
+      <object-graph>
+        <objects>
+          <object caption='covid_cases_county.csv' id='covid_cases_county.csv_E9DC7DD5571045819CEF54611EC383D0'>
+            <properties context=''>
+              <relation connection='textscan.0cm1b6z1jy0ywn12ewrqd19ke38x' name='covid_cases_county.csv' table='[covid_cases_county#csv]' type='table'>
+                <columns character-set='UTF-8' header='yes' locale='en_US' separator=','>
+                  <column datatype='date' name='date' ordinal='0' />
+                  <column datatype='string' name='state' ordinal='1' />
+                  <column datatype='string' name='county' ordinal='2' />
+                  <column datatype='integer' name='population' ordinal='3' />
+                  <column datatype='integer' name='confirmed_cases' ordinal='4' />
+                </columns>
+              </relation>
+            </properties>
+          </object>
+        </objects>
+      </object-graph>
+    </datasource>
+  </datasources>
+  <mapsources>
+    <mapsource name='Tableau' />
+  </mapsources>
+  <worksheets>
+    <worksheet name='Map of covid cases by county (Max Cases)'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='covid_cases_county' name='federated.06alqoj0wcr1kk12mtoxp1xspbjz' />
+          </datasources>
+          <mapsources>
+            <mapsource name='Tableau' />
+          </mapsources>
+          <datasource-dependencies datasource='federated.06alqoj0wcr1kk12mtoxp1xspbjz'>
+            <column caption='Confirmed Cases' datatype='integer' name='[confirmed_cases]' role='measure' type='quantitative' />
+            <column caption='County' datatype='string' name='[county]' role='dimension' semantic-role='[County].[Name]' type='nominal' />
+            <column-instance column='[confirmed_cases]' derivation='Max' name='[max:confirmed_cases:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[county]' derivation='None' name='[none:county:nk]' pivot='key' type='nominal' />
+            <column-instance column='[state]' derivation='None' name='[none:state:nk]' pivot='key' type='nominal' />
+            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <encoding attr='space' class='0' field='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[Longitude (generated)]' field-type='quantitative' max='-6961251.7991617061' min='-13924740.559113882' projection='EPSG:3857' range-type='fixed' scope='cols' type='space' />
+            <encoding attr='space' class='0' field='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[Latitude (generated)]' field-type='quantitative' max='6751604.7700991556' min='2669742.1452170261' projection='EPSG:3857' range-type='fixed' scope='rows' type='space' />
+          </style-rule>
+          <style-rule element='mark'>
+            <encoding attr='color' field='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[max:confirmed_cases:qk]' palette='green_gold_10_0' type='interpolated' />
+          </style-rule>
+          <style-rule element='map'>
+            <format attr='washout' value='0.0' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <lod column='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[none:state:nk]' />
+              <lod column='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[none:county:nk]' />
+              <color column='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[max:confirmed_cases:qk]' />
+              <geometry column='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[Geometry (generated)]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[Latitude (generated)]</rows>
+        <cols>[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[Longitude (generated)]</cols>
+      </table>
+      <simple-id uuid='{22AEB566-5E52-4405-90FE-CDC51566A0D2}' />
+    </worksheet>
+    <worksheet name='Map of covid cases by county (Most Recent Day)'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='covid_cases_county' name='federated.06alqoj0wcr1kk12mtoxp1xspbjz' />
+          </datasources>
+          <mapsources>
+            <mapsource name='Tableau' />
+          </mapsources>
+          <datasource-dependencies datasource='federated.06alqoj0wcr1kk12mtoxp1xspbjz'>
+            <column caption='Confirmed Cases' datatype='integer' name='[confirmed_cases]' role='measure' type='quantitative' />
+            <column caption='County' datatype='string' name='[county]' role='dimension' semantic-role='[County].[Name]' type='nominal' />
+            <column caption='Date' datatype='date' name='[date]' role='dimension' type='ordinal' />
+            <column-instance column='[date]' derivation='MDY' name='[md:date:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[county]' derivation='None' name='[none:county:nk]' pivot='key' type='nominal' />
+            <column-instance column='[state]' derivation='None' name='[none:state:nk]' pivot='key' type='nominal' />
+            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column-instance column='[confirmed_cases]' derivation='Sum' name='[sum:confirmed_cases:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[md:date:ok]'>
+            <groupfilter function='member' level='[md:date:ok]' member='20221231' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <slices>
+            <column>[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[md:date:ok]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <encoding attr='space' class='0' field='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[Longitude (generated)]' field-type='quantitative' max='-6961251.7991617061' min='-13924740.559113882' projection='EPSG:3857' range-type='fixed' scope='cols' type='space' />
+            <encoding attr='space' class='0' field='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[Latitude (generated)]' field-type='quantitative' max='6751604.7700991556' min='2669742.1452170261' projection='EPSG:3857' range-type='fixed' scope='rows' type='space' />
+          </style-rule>
+          <style-rule element='mark'>
+            <encoding attr='color' field='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[sum:confirmed_cases:qk]' palette='green_gold_10_0' type='interpolated' />
+          </style-rule>
+          <style-rule element='map'>
+            <format attr='washout' value='0.0' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <lod column='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[none:state:nk]' />
+              <lod column='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[none:county:nk]' />
+              <color column='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[sum:confirmed_cases:qk]' />
+              <geometry column='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[Geometry (generated)]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[Latitude (generated)]</rows>
+        <cols>[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[Longitude (generated)]</cols>
+      </table>
+      <simple-id uuid='{F569BF70-E9E3-41BC-B791-D440E09F8941}' />
+    </worksheet>
+    <worksheet name='Table of Population: Fix - Min, Max, Med, Avg'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='covid_cases_county' name='federated.06alqoj0wcr1kk12mtoxp1xspbjz' />
+          </datasources>
+          <datasource-dependencies datasource='federated.06alqoj0wcr1kk12mtoxp1xspbjz'>
+            <column caption='County' datatype='string' name='[county]' role='dimension' semantic-role='[County].[Name]' type='nominal' />
+            <column-instance column='[county]' derivation='None' name='[none:county:nk]' pivot='key' type='nominal' />
+            <column-instance column='[state]' derivation='None' name='[none:state:nk]' pivot='key' type='nominal' />
+            <column caption='Population' datatype='integer' name='[population]' role='measure' type='quantitative' />
+            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column-instance column='[population]' derivation='Sum' name='[sum:population:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[none:state:nk]'>
+            <groupfilter function='member' level='[none:state:nk]' member='&quot;Ohio&quot;' user:ui-domain='cascading' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
+          <slices>
+            <column>[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[none:state:nk]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <text column='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[sum:population:qk]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[none:county:nk]</rows>
+        <cols>[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[:Measure Names]</cols>
+      </table>
+      <simple-id uuid='{04A0369A-D274-4E66-8E70-55D432572666}' />
+    </worksheet>
+  </worksheets>
+  <windows source-height='30'>
+    <window class='worksheet' name='Map of covid cases by county (Most Recent Day)'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='208'>
+            <card pane-specification-id='0' param='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[sum:confirmed_cases:qk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <default-map-tool-selection tool='1' />
+      </viewpoint>
+      <simple-id uuid='{52117E0B-521F-43A5-9926-A83403D4F562}' />
+    </window>
+    <window class='worksheet' name='Map of covid cases by county (Max Cases)'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='208'>
+            <card pane-specification-id='0' param='[federated.06alqoj0wcr1kk12mtoxp1xspbjz].[max:confirmed_cases:qk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <default-map-tool-selection tool='1' />
+      </viewpoint>
+      <simple-id uuid='{B2D330DF-3BA9-41A3-8342-EE67DB128394}' />
+    </window>
+    <window class='worksheet' maximized='true' name='Table of Population: Fix - Min, Max, Med, Avg'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='31'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{C5DF1B74-D9D8-4EFF-92F7-00365F9E8C17}' />
+    </window>
+  </windows>
+</workbook>
